@@ -67,21 +67,34 @@ const theme = createTheme({
   },
   paper: {
     paper: {
-      margin: 10,
+      margin: 20,
       backgroundColor: "#ffffff",
+      boxShadow: "0px 10px 10px #eee"
     },
     header: {
-      color: "#00913E",
-      backgroundColor: "#ffffff",
+      // color: "#00913E",
+      color:"#333",
+      fontWeight: 500,
+      backgroundColor: "rgba(0,145,62,20%)",
     },
     message: {
-      backgroundColor: "#ffffff",
+      // backgroundColor: "#ffffff",
+      backgroundColor: "rgba(0,145,62,20%)",
+
     },
     title: {
       padding: 10,
       fontSize: 24,
-      color: "#333333",
-      backgroundColor: "#ffffff",
+      color: "#333",
+      fontWeight: 500,
+      // backgroundColor: "#ffffff",
+      backgroundColor: "rgba(0,145,62,20%)",
+    },
+    headerTitles: {
+      padding: 10,
+      fontSize: 24,
+      fontWeight: 500,
+      color: "#333",
     },
     action: {
       padding: 5,
@@ -102,8 +115,10 @@ const theme = createTheme({
     title: {
       padding: 10,
       fontWeight: 600,
-      color: "#666666",
-      backgroundColor: "#ffffff",
+      color: "#333",
+      // backgroundColor: "#ffffff",
+      backgroundColor: "rgba(0,145,62,10%)",
+
     },
     header: {
       color: "#666666",
