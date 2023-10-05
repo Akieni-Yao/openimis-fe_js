@@ -72,19 +72,13 @@ const theme = createTheme({
       boxShadow: "0px 10px 10px #eee",
     },
     header: {
-      // color: "#00913E",
       color: "#333",
       fontWeight: 500,
-      // backgroundColor: "rgba(0,145,62,20%)",
-      // backgroundColor: "rgba(0,145,62)",
       backgroundColor: "#D3F0E0",
 
 
     },
     message: {
-      // backgroundColor: "#ffffff",
-      // backgroundColor: "rgba(0,145,62,20%)",
-      // backgroundColor: "rgba(0,145,62)",
       backgroundColor: "#D3F0E0",
 
 
@@ -95,9 +89,6 @@ const theme = createTheme({
       fontSize: 24,
       color: "#333",
       fontWeight: 500,
-      // backgroundColor: "#ffffff",
-      // backgroundColor: "rgba(0,145,62,20%)",
-      // backgroundColor: "rgba(0,145,62)",
       backgroundColor: "#D3F0E0",
 
 
@@ -134,7 +125,6 @@ const theme = createTheme({
       fontWeight: 600,
       color: "#333",
       backgroundColor: "#D3F0E0",
-      // backgroundColor: "rgba(0,145,62,10%)",
 
     },
     header: {
