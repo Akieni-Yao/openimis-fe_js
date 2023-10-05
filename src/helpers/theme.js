@@ -69,17 +69,25 @@ const theme = createTheme({
     paper: {
       margin: 20,
       backgroundColor: "#ffffff",
-      boxShadow: "0px 10px 10px #eee"
+      boxShadow: "0px 10px 10px #eee",
     },
     header: {
       // color: "#00913E",
-      color:"#333",
+      color: "#333",
       fontWeight: 500,
-      backgroundColor: "rgba(0,145,62,20%)",
+      // backgroundColor: "rgba(0,145,62,20%)",
+      // backgroundColor: "rgba(0,145,62)",
+      backgroundColor: "#D3F0E0",
+
+
     },
     message: {
       // backgroundColor: "#ffffff",
-      backgroundColor: "rgba(0,145,62,20%)",
+      // backgroundColor: "rgba(0,145,62,20%)",
+      // backgroundColor: "rgba(0,145,62)",
+      backgroundColor: "#D3F0E0",
+
+
 
     },
     title: {
@@ -88,7 +96,11 @@ const theme = createTheme({
       color: "#333",
       fontWeight: 500,
       // backgroundColor: "#ffffff",
-      backgroundColor: "rgba(0,145,62,20%)",
+      // backgroundColor: "rgba(0,145,62,20%)",
+      // backgroundColor: "rgba(0,145,62)",
+      backgroundColor: "#D3F0E0",
+
+
     },
     headerTitles: {
       padding: 10,
@@ -112,12 +124,17 @@ const theme = createTheme({
     },
   },
   table: {
+    heading: {
+      padding: 10,
+      fontWeight: 600,
+      color: "#333",
+    },
     title: {
       padding: 10,
       fontWeight: 600,
       color: "#333",
-      // backgroundColor: "#ffffff",
-      backgroundColor: "rgba(0,145,62,10%)",
+      backgroundColor: "#D3F0E0",
+      // backgroundColor: "rgba(0,145,62,10%)",
 
     },
     header: {
@@ -188,11 +205,11 @@ const theme = createTheme({
     },
     primaryButton: {
       backgroundColor: "#ffffff",
-      color: "#fff",
+      color: "#00913E",
       fontWeight: "bold",
       "&:hover": {
-        backgroundColor: alpha("#ffffff", 0.5),
-        color: "#00913E",
+        backgroundColor: alpha("#00913E", 0.5),
+        color: "#ffffff",
       },
     },
     secondaryButton: {},
