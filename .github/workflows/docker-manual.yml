@@ -18,5 +18,5 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build the openimis backend  Docker image
       run: |
-         docker build . --tag ghcr.io/openimis/openimis-fe:${{ github.event.inputs.tag }}
-         docker push ghcr.io/openimis/openimis-fe:${{ github.event.inputs.tag }}
+         docker build . --tag ghcr.io/akieni-yao/openimis-fe:${{ github.event.inputs.tag }}
+         docker push ghcr.io/akieni-yao/openimis-fe:${{ github.event.inputs.tag }}
