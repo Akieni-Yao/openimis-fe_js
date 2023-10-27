@@ -16,6 +16,7 @@ import { App, FatalError, baseApiUrl, apiHeaders } from "@openimis/fe-core";
 import messages_ref from "./translations/ref.json";
 import "./index.css";
 import logo from "./openIMIS.png";
+import backgroundImage from "./backgroundNewImage.png"
 
 const loadConfiguration = async () => {
   const response = await fetch(`${baseApiUrl}/graphql`, {
@@ -92,6 +93,7 @@ const AppContainer = () => {
                 localesManager={localesManager}
                 messages={messages_ref}
                 logo={logo}
+                backgroundImage={backgroundImage}
               />
             </ModulesManagerProvider>
           </MuiPickersUtilsProvider>
