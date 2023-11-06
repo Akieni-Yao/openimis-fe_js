@@ -71,6 +71,10 @@ const theme = createTheme({
       backgroundColor: "#ffffff",
       boxShadow: "0px 10px 10px #eee",
     },
+    loginPaper: {
+      margin: 20,
+      backgroundColor: "#ffffff",
+    },
     header: {
       color: "#333",
       fontWeight: 500,

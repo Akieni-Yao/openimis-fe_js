@@ -6,7 +6,7 @@ if [  ! -f "/etc/letsencrypt/live/${NEW_OPENIMIS_HOST}/fullchain.pem" ]; then
   cp -a /etc/nginx/ssl/live/host/. /etc/letsencrypt/live/${NEW_OPENIMIS_HOST}/
 fi
 REF=$(date +'%m%d%Y%p')
-[ ${FORCE_RELOAD} -eq 1 ] && REDIRECT_TAIL="&${REF}" || REDIRECT_TAIL=''
+[ ${FORCE_RELOAD:-0} -eq 1 ] && REDIRECT_TAIL="&${REF}" || REDIRECT_TAIL=''
 rm -f /etc/nginx/conf.d/openIMIS.confs
 rm -f /etc/nginx/conf.d/default.conf
 cp  /conf/openimis.conf /etc/nginx/conf.d/openIMIS.conf
