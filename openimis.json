@@ -20,19 +20,19 @@
         "modules": [
         {
             "name": "CoreModule",
-            "npm": "@openimis/fe-core@git+https://github.com/Akieni-Yao/openimis-fe-core_js.git#akieni"
+            "npm": "@openimis/fe-core@git+https://github.com/Akieni-Yao/openimis-fe-core_js.git#release/test"
         },
             {
             "name": "HomeModule",
-            "npm": "@openimis/fe-home@git+https://github.com/Akieni-Yao/openimis-fe-home_js.git#akieni"
+            "npm": "@openimis/fe-home@git+https://github.com/Akieni-Yao/openimis-fe-home_js.git#release/test"
         },
             {
             "name": "LocationModule",
-            "npm": "@openimis/fe-location@git+https://github.com/Akieni-Yao/openimis-fe-location_js.git#akieni"
+            "npm": "@openimis/fe-location@git+https://github.com/Akieni-Yao/openimis-fe-location_js.git#release/test"
         },
             {
             "name": "InsureeModule",
-            "npm": "@openimis/fe-insuree@git+https://github.com/Akieni-Yao/openimis-fe-insuree_js.git#akieni"
+            "npm": "@openimis/fe-insuree@git+https://github.com/Akieni-Yao/openimis-fe-insuree_js.git#release/test"
         },
             {
             "name": "MedicalModule",
@@ -48,7 +48,7 @@
         },
             {
             "name": "PolicyModule",
-            "npm": "@openimis/fe-policy@git+https://github.com/Akieni-Yao/openimis-fe-policy_js.git#akieni"
+            "npm": "@openimis/fe-policy@git+https://github.com/Akieni-Yao/openimis-fe-policy_js.git#release/test"
         },
             {
             "name": "PayerModule",
@@ -56,7 +56,7 @@
         },
             {
             "name": "ContributionModule",
-            "npm": "@openimis/fe-contribution@git+https://github.com/Akieni-Yao/openimis-fe-contribution_js.git#akieni"
+            "npm": "@openimis/fe-contribution@git+https://github.com/Akieni-Yao/openimis-fe-contribution_js.git#release/test"
         },
             {
             "name": "ClaimModule",
@@ -68,7 +68,7 @@
         },
             {
             "name": "AdminModule",
-            "npm": "@openimis/fe-admin@git+https://github.com/Akieni-Yao/openimis-fe-admin_js.git#akieni"
+            "npm": "@openimis/fe-admin@git+https://github.com/Akieni-Yao/openimis-fe-admin_js.git#release/test"
         },
             {
             "name": "ToolsModule",
@@ -80,7 +80,7 @@
         },
             {
             "name": "LanguageFrModule",
-            "npm": "@openimis/fe-language_fr@git+https://github.com/Akieni-Yao/openimis-fe-language_fr_js.git#akieni"
+            "npm": "@openimis/fe-language_fr@git+https://github.com/Akieni-Yao/openimis-fe-language_fr_js.git#release/test"
         },
             {
             "name": "CalculationModule",
@@ -88,7 +88,7 @@
         },
             {
             "name": "PolicyHolderModule",
-            "npm": "@openimis/fe-policyholder@git+https://github.com/Akieni-Yao/openimis-fe-policyholder_js.git#akieni"
+            "npm": "@openimis/fe-policyholder@git+https://github.com/Akieni-Yao/openimis-fe-policyholder_js.git#release/test"
         },
             {
             "name": "ContributionPlanModule",
@@ -104,7 +104,7 @@
         },
          {
             "name": "PaymentModule",
-            "npm": "@openimis/fe-payment@git+https://github.com/Akieni-Yao/openimis-fe-payment_js..git#akieni"
+            "npm": "@openimis/fe-payment@git+https://github.com/Akieni-Yao/openimis-fe-payment_js..git#release/test"
         }
         ]
 }
