@@ -96,7 +96,7 @@
         },
             {
             "name": "ContractModule",
-            "npm": "@openimis/fe-contract@git+https://github.com/openimis/openimis-fe-contract_js.git#main"
+            "npm": "@openimis/fe-contract@git+https://github.com/Akieni-Yao/openimis-fe-contract_js.git#akieni"
         },
             {
             "name": "InvoiceModule",
