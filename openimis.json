@@ -76,7 +76,7 @@
         },
             {
             "name": "ProfileModule",
-            "npm": "@openimis/fe-profile@git+https://github.com/openimis/openimis-fe-profile_js.git#main"
+            "npm": "@openimis/fe-profile@git+https://github.com/Akieni-Yao/openimis-fe-profile_js.git#akieni"
         },
             {
             "name": "LanguageFrModule",
