@@ -41,7 +41,7 @@
     "@openimis/fe-claim": "git+https://github.com/openimis/openimis-fe-claim_js.git#hotfix/OP-1454_claimed_filter",
     "@openimis/fe-claim_batch": "git+https://github.com/openimis/openimis-fe-claim_batch_js.git#main",
     "@openimis/fe-admin": "git+https://github.com/Akieni-Yao/openimis-fe-admin_js.git#akieni",
-    "@openimis/fe-tools": "git+https://github.com/openimis/openimis-fe-tools_js.git#main",
+    "@openimis/fe-tools": "git+https://github.com/Akieni-Yao/openimis-fe-tools_js.git#akieni",
     "@openimis/fe-profile": "git+https://github.com/Akieni-Yao/openimis-fe-profile_js.git#akieni",
     "@openimis/fe-language_fr": "git+https://github.com/Akieni-Yao/openimis-fe-language_fr_js.git#akieni",
     "@openimis/fe-calculation": "git+https://github.com/openimis/openimis-fe-calculation_js.git#main",
