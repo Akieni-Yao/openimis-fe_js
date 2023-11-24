@@ -72,7 +72,7 @@
         },
             {
             "name": "ToolsModule",
-            "npm": "@openimis/fe-tools@git+https://github.com/openimis/openimis-fe-tools_js.git#main"
+            "npm": "@openimis/fe-tools@git+https://github.com/Akieni-Yao/openimis-fe-tools_js.git#akieni"
         },
             {
             "name": "ProfileModule",
