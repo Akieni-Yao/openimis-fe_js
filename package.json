@@ -32,7 +32,7 @@
     "@openimis/fe-home": "git+https://github.com/Akieni-Yao/openimis-fe-home_js.git#akieni",
     "@openimis/fe-location": "git+https://github.com/Akieni-Yao/openimis-fe-location_js.git#akieni",
     "@openimis/fe-insuree": "git+https://github.com/Akieni-Yao/openimis-fe-insuree_js.git#akieni",
-    "@openimis/fe-medical": "git+https://github.com/openimis/openimis-fe-medical_js.git#main",
+    "@openimis/fe-medical": "git+https://github.com/Akieni-Yao/openimis-fe-medical_js.git#akieni",
     "@openimis/fe-medical_pricelist": "git+https://github.com/openimis/openimis-fe-medical_pricelist_js.git#main",
     "@openimis/fe-product": "git+https://github.com/openimis/openimis-fe-product_js.git#main",
     "@openimis/fe-policy": "git+https://github.com/Akieni-Yao/openimis-fe-policy_js.git#akieni",
