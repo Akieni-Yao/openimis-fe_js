@@ -36,7 +36,7 @@
         },
             {
             "name": "MedicalModule",
-            "npm": "@openimis/fe-medical@git+https://github.com/openimis/openimis-fe-medical_js.git#main"
+            "npm": "@openimis/fe-medical@git+https://github.com/Akieni-Yao/openimis-fe-medical_js.git#release/test"
         },
             {
             "name": "MedicalPriceListModule",
