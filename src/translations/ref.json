@@ -5,6 +5,7 @@
   "cancel": "Cancel",
   "empty": " ",
   "FatalError.title": "Fatal Error",
+  "FatalError.Bad Request": "Bad Request",
   "FatalError.message": "Requested action can't be executed, please check your internet connection,...",
   "currency": "FCFA",
   "rowsPerPage": "Rows Per Page",
