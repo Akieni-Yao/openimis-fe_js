@@ -44,7 +44,7 @@
         },
             {
             "name": "ProductModule",
-            "npm": "@openimis/fe-product@git+https://github.com/openimis/openimis-fe-product_js.git#main"
+            "npm": "@openimis/fe-product@git+https://github.com/Akieni-Yao/openimis-fe-product_js.git#release/test"
         },
             {
             "name": "PolicyModule",
