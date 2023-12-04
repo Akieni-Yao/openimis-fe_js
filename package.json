@@ -34,7 +34,7 @@
     "@openimis/fe-insuree": "git+https://github.com/Akieni-Yao/openimis-fe-insuree_js.git#release/test",
     "@openimis/fe-medical": "git+https://github.com/Akieni-Yao/openimis-fe-medical_js.git#release/test",
     "@openimis/fe-medical_pricelist": "git+https://github.com/openimis/openimis-fe-medical_pricelist_js.git#main",
-    "@openimis/fe-product": "git+https://github.com/openimis/openimis-fe-product_js.git#main",
+    "@openimis/fe-product": "git+https://github.com/Akieni-Yao/openimis-fe-product_js.git#release/test",
     "@openimis/fe-policy": "git+https://github.com/Akieni-Yao/openimis-fe-policy_js.git#release/test",
     "@openimis/fe-payer": "git+https://github.com/openimis/openimis-fe-payer_js.git#main",
     "@openimis/fe-contribution": "git+https://github.com/Akieni-Yao/openimis-fe-contribution_js.git#release/test",
