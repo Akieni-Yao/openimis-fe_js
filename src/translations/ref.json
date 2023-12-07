@@ -42,5 +42,8 @@
   "addTooltip": "Create new",
   "saveTooltip": "Save changes",
   "resetFilterTooltip": "Reset search criteria",
-  "refreshFilterTooltip": "Search again"
+  "refreshFilterTooltip": "Search again",
+  "approveTooltip":"Approve",
+  "rejectTooltip":"Reject",
+  "reworkTooltip":"Rework"
 }
