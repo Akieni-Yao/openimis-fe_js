@@ -40,7 +40,7 @@
         },
             {
             "name": "MedicalPriceListModule",
-            "npm": "@openimis/fe-medical_pricelist@git+https://github.com/openimis/openimis-fe-medical_pricelist_js.git#main"
+            "npm": "@openimis/fe-medical_pricelist@git+https://github.com/Akieni-Yao/openimis-fe-medical_pricelist_js.git#akieni"
         },
             {
             "name": "ProductModule",
@@ -52,7 +52,7 @@
         },
             {
             "name": "PayerModule",
-            "npm": "@openimis/fe-payer@git+https://github.com/openimis/openimis-fe-payer_js.git#main"
+            "npm": "@openimis/fe-payer@git+https://github.com/Akieni-Yao/openimis-fe-payer_js.git#akieni"
         },
             {
             "name": "ContributionModule",
@@ -64,7 +64,7 @@
         },
             {
             "name": "ClaimBatchModule",
-            "npm": "@openimis/fe-claim_batch@git+https://github.com/openimis/openimis-fe-claim_batch_js.git#main"
+            "npm": "@openimis/fe-claim_batch@git+https://github.com/Akieni-Yao/openimis-fe-claim_batch_js.git#akieni"
         },
             {
             "name": "AdminModule",
@@ -84,7 +84,7 @@
         },
             {
             "name": "CalculationModule",
-            "npm": "@openimis/fe-calculation@git+https://github.com/openimis/openimis-fe-calculation_js.git#main"
+            "npm": "@openimis/fe-calculation@git+https://github.com/Akieni-Yao/openimis-fe-calculation_js.git#akieni"
         },
             {
             "name": "PolicyHolderModule",
@@ -100,7 +100,7 @@
         },
             {
             "name": "InvoiceModule",
-            "npm": "@openimis/fe-invoice@git+https://github.com/openimis/openimis-fe-invoice_js.git#main"
+            "npm": "@openimis/fe-invoice@git+https://github.com/Akieni-Yao/openimis-fe-invoice_js.git#akieni"
         },
          {
             "name": "PaymentModule",
