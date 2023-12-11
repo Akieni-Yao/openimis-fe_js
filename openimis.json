@@ -84,7 +84,7 @@
         },
             {
             "name": "CalculationModule",
-            "npm": "@openimis/fe-calculation@git+https://github.com/Akieni-Yao/openimis-fe-calculation_js.git#akieni"
+            "npm": "@openimis/fe-calculation@git+https://github.com/Akieni-Yao/openimis-fe-calculation.git#akieni"
         },
             {
             "name": "PolicyHolderModule",
