@@ -52,7 +52,7 @@
     },
         {
         "name": "PayerModule",
-        "npm": "@openimis/fe-payer@git+https://github.com/Akieni-Yao/openimis-fe-payer_js.git#release/master"
+        "npm": "@openimis/fe-payer@git+https://github.com/Akieni-Yao/openimis-fe-payer.git#release/master"
     },
         {
         "name": "ContributionModule",
@@ -64,7 +64,7 @@
     },
         {
         "name": "ClaimBatchModule",
-        "npm": "@openimis/fe-claim_batch@git+https://github.com/Akieni-Yao/openimis-fe-claim_batch_js.git#release/master"
+        "npm": "@openimis/fe-claim_batch@git+https://github.com/Akieni-Yao/openimis-fe-claim_batch.git#release/master"
     },
         {
         "name": "AdminModule",
@@ -84,7 +84,7 @@
     },
         {
         "name": "CalculationModule",
-        "npm": "@openimis/fe-calculation@git+https://github.com/Akieni-Yao/openimis-fe-calculation_js.git#release/master"
+        "npm": "@openimis/fe-calculation@git+https://github.com/Akieni-Yao/openimis-fe-calculation.git#release/master"
     },
         {
         "name": "PolicyHolderModule",
