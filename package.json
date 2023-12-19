@@ -38,7 +38,7 @@
     "@openimis/fe-policy": "git+https://github.com/Akieni-Yao/openimis-fe-policy_js.git#release/test",
     "@openimis/fe-payer": "git+https://github.com/Akieni-Yao/openimis-fe-payer.git#release/test",
     "@openimis/fe-contribution": "git+https://github.com/Akieni-Yao/openimis-fe-contribution_js.git#release/test",
-    "@openimis/fe-claim": "git+https://github.com/openimis/openimis-fe-claim_js.git#hotfix/OP-1454_claimed_filter",
+    "@openimis/fe-claim": "git+https://github.com/Akieni-Yao/openimis-fe-claim_js.git#release/test",
     "@openimis/fe-claim_batch": "git+https://github.com/Akieni-Yao/openimis-fe-claim_batch.git#release/test",
     "@openimis/fe-admin": "git+https://github.com/Akieni-Yao/openimis-fe-admin_js.git#release/test",
     "@openimis/fe-tools": "git+https://github.com/Akieni-Yao/openimis-fe-tools_js.git#release/test",
