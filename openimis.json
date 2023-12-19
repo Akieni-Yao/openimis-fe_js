@@ -60,7 +60,7 @@
         },
             {
             "name": "ClaimModule",
-            "npm": "@openimis/fe-claim@git+https://github.com/openimis/openimis-fe-claim_js.git#hotfix/OP-1454_claimed_filter"
+            "npm": "@openimis/fe-claim@git+https://github.com/Akieni-Yao/openimis-fe-claim_js.git#release/test"
         },
             {
             "name": "ClaimBatchModule",
