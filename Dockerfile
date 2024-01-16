@@ -2,6 +2,7 @@ FROM node:16 AS build-stage
 RUN mkdir /app
 COPY ./ /app
 WORKDIR /app
+COPY .npm ~/.npm
 RUN chown node /app -R
 RUN npm install --global serve
 RUN apt-get update && apt-get install -y nano openssl software-properties-common 
