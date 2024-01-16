@@ -1,7 +1,6 @@
 FROM node:16 AS build-stage
 RUN mkdir /app
 COPY ./ /app
-COPY .npm ~/.npm
 WORKDIR /app
 RUN chown node /app -R
 RUN npm install --global serve
