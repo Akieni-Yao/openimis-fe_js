@@ -1,6 +1,5 @@
 FROM node:16 AS build-stage
-COPY .npm  /app
-COPY .npm  /root
+COPY .npm ~/.npm
 RUN mkdir /app
 COPY ./ /app
 WORKDIR /app
