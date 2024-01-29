@@ -87,11 +87,11 @@ function main() {
   for (const module of config.modules) {
     const { npm, name, logicalName } = module;
     // Find version number
-    const moduleName = npm.substring(0, npm.lastIndexOf("@"));
+    const moduleName = npm.substring(0, npm.indexOf("@",1));
     if (npm.lastIndexOf("@") <= 0) {
       throw new Error(`  Module ${moduleName} has no version set.`);
     }
-    const version = npm.substring(npm.lastIndexOf("@") + 1);
+    const version = npm.substring(npm.indexOf("@",2) + 1);
     console.log(`  added "${moduleName}": ${version}`);
     pkg.dependencies[moduleName] = version;
     modules.push({
