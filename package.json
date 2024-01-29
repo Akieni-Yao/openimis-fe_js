@@ -29,7 +29,7 @@
       "redux-thunk": "^2.3.0",
       "shelljs": "^0.8.4",
       "@openimis/fe-core": "git+https://github.com/Akieni-Yao/openimis-fe-core_js.git#akieni",
-      "@openimis/fe-home": "git+https://github.com/Akieni-Yao/openimis-fe-home_js.git#akieni",
+      "@openimis/fe-home": "git+https://konda24srikanth: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@github.com/Akieni-Yao/openimis-fe-home_js.git#akieni",
       "@openimis/fe-location": "git+https://github.com/Akieni-Yao/openimis-fe-location_js.git#akieni",
       "@openimis/fe-insuree": "git+https://github.com/Akieni-Yao/openimis-fe-insuree_js.git#akieni",
       "@openimis/fe-medical": "git+https://github.com/Akieni-Yao/openimis-fe-medical_js.git#akieni",
