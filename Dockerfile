@@ -12,6 +12,7 @@ ENV OPENIMIS_CONF_JSON=${OPENIMIS_CONF_JSON}
 ENV NODE_ENV=production
 RUN npm run load-config
 RUN npm install 
+RUN npm install ws
 RUN npm run build
 
 
