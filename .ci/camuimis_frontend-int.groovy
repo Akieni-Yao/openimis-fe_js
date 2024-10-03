@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        WEBHOOK_TOKEN = credentials('IMSBE_WH_TOKEN')
+        WEBHOOK_TOKEN = credentials('IMSFE_WH_TOKEN')
         ECR_REGISTRY = "767397924087.dkr.ecr.eu-west-3.amazonaws.com"
         REPO_NAME = "engineering"
         AWS_REGION = "eu-west-3"
@@ -21,7 +21,7 @@ pipeline {
             ],
             causeString: 'Triggered by Pull Request ${PR_ACTION} action on branch: ${PR_BRANCH}',
             token: '${WEBHOOK_TOKEN}',
-            tokenCredentialId: 'IMSBE_WH_TOKEN',
+            tokenCredentialId: 'IMSFE_WH_TOKEN',
             printContributedVariables: true,
             printPostContent: true,
             regexpFilterText: '$PR_ACTION$PR_MERGED$PR_BRANCH',
@@ -68,7 +68,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def IMAGE_TAG = "ims_backend_dev-v${env.APP_VERSION}"
+                    def IMAGE_TAG = "ims_frontend_int-v${env.APP_VERSION}"
                     def IMAGE_NAME = "${ECR_REGISTRY}/${REPO_NAME}"
                     def FULL_IMAGE_NAME = "${IMAGE_NAME}:${IMAGE_TAG}"
 
@@ -98,7 +98,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    def IMAGE_TAG = "ims_backend_dev-v${env.APP_VERSION}"
+                    def IMAGE_TAG = "ims_frontend_int-v${env.APP_VERSION}"
                     def IMAGE_NAME = "${ECR_REGISTRY}/${REPO_NAME}"
                     def FULL_IMAGE_NAME = "${IMAGE_NAME}:${IMAGE_TAG}"
                     
@@ -111,10 +111,10 @@ pipeline {
                 }
             }
         }
-        stage('Deploy IMS Dev Backend') {
+        stage('Deploy IMS Int Frontend') {
             environment {
                 ARGOCD_SERVER = credentials('argocd-server')
-                ARGOCD_APP = "ims-backend-dev"
+                ARGOCD_APP = "ims-frontend-int"
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'argocd-cred', usernameVariable: "ARGOCD_USERNAME", passwordVariable: "ARGOCD_PASSWORD")]) {
