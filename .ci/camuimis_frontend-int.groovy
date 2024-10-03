@@ -38,7 +38,7 @@ pipeline {
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [],
                     userRemoteConfigs: [[
-                        url: 'https://github.com/Akieni-Yao/openimis-be_py.git',
+                        url: 'https://github.com/Akieni-Yao/openimis-fe_js.git',
                         credentialsId: 'GH_Credentials'
                     ]]
                 ])
