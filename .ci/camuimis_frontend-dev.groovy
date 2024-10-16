@@ -137,21 +137,13 @@ pipeline {
     post {
         success {
             slackSend(color: '#00B32C', message: """
-                Build Succeeded for PR: ${env.PR_TITLE}
-                Branch: ${env.PR_BRANCH}
-                Commit: ${env.PR_COMMIT}
-                Pull Request Link: ${PR_URL}
-                Author: ${env.PR_AUTHOR}
+                Build Successful!!
                 Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)
             """, channel: 'camu-ci-alerts')
         }
         failure {
             slackSend(color: '#B3000C', message: """
-                Build Failed for PR: ${env.PR_TITLE}
-                Branch: ${env.PR_BRANCH}
-                Commit: ${env.PR_COMMIT}
-                Pull Request Link: ${PR_URL}
-                Author: ${env.PR_AUTHOR}
+                Build Failed!!
                 Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)
             """, channel: 'camu-ci-alerts')
         }
