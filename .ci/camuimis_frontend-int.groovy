@@ -57,7 +57,7 @@ pipeline {
             steps {
                 script {
                     // Extract the appVersion from Chart.yaml
-                    def chartFile = '.cd/dev/Chart.yaml'
+                    def chartFile = '.cd/int/Chart.yaml'
                     def appVersion = sh(script: "yq e '.appVersion' ${chartFile}", returnStdout: true).trim()
                     
                     // Set the appVersion as an environment variable
