@@ -108,7 +108,7 @@ env:
     value: >-
       https://abis.akieni.com/public/enrollment/index.html#/enroll/applicant-detail
   - name: REACT_APP_GED_URL
-    value: https://dev-gedbackend.camu.cg/cnss
+    value: https://dev-ged.camu.cg/backend/cnss
   - name: REACT_APP_ABIS_VERIFICATION_URL
     value: >-
       https://abis.akieni.com/public/enrollment/index.html#/enroll/applicant-detail
