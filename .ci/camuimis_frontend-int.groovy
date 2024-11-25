@@ -6,6 +6,12 @@ pipeline {
         REPO_NAME = "engineering"
         AWS_REGION = "eu-west-3"
         GH_TOKEN = credentials('GH_TOKEN')
+        REACT_APP_ABIS_URL = "https://abis.akieni.com/public/enrollment/index.html#/enroll"
+        REACT_APP_GED_URL = "https://int-ged.akieni.tech/backend/cnss"
+        REACT_APP_USERNAME = credentials('GED_USERNAME')
+        REACT_APP_PASSWORD = credentials('GED_PASSWORD')
+        REACT_APP_ABIS_VERIFICATION_URL = "https://abis.akieni.com/public/enrollment/index.html#/verify"
+        REACT_APP_IDLE_LOGOUT_TIME="1800000"
     }
     triggers {
         // Use a generic webhook trigger and set conditions within the pipeline
@@ -25,7 +31,7 @@ pipeline {
             printContributedVariables: true,
             printPostContent: true,
             regexpFilterText: '$PR_ACTION$PR_MERGED$PR_BRANCH',
-            regexpFilterExpression: '^closedtrueakieni$',
+            regexpFilterExpression: '^openedfalsemain$',
             silentResponse: false
         )
     }
@@ -34,7 +40,7 @@ pipeline {
             steps {
                 checkout([
                     $class: 'GitSCM',
-                    branches: [[name: "*/release/test"]],
+                    branches: [[name: "*/develop"]],
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [],
                     userRemoteConfigs: [[
@@ -44,11 +50,23 @@ pipeline {
                 ])
             }
         }
-        stage('Adding Auth Token') {
+        stage('Setup Module config') {
             steps {
                 script {
                     sh '''
+                        cp openimis-release.json openimis.json
+                        cp package-release.json package.json
                         sed -i "s|git+https://github.com|git+https://apps-sa:${GH_TOKEN}@github.com|g" openimis.json
+                    '''
+                }
+            }
+        }
+        stage('Setup Environment variables') {
+            steps {
+                script {
+                    sh '''
+                        chmod +x setup_env.sh
+                        ./setup_env.sh
                     '''
                 }
             }
@@ -137,13 +155,21 @@ pipeline {
     post {
         success {
             slackSend(color: '#00B32C', message: """
-                Build Successful!!
+                Build Succeeded for PR: ${env.PR_TITLE}
+                Branch: ${env.PR_BRANCH}
+                Commit: ${env.PR_COMMIT}
+                Pull Request Link: ${PR_URL}
+                Author: ${env.PR_AUTHOR}
                 Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)
             """, channel: 'camu-ci-alerts')
         }
         failure {
             slackSend(color: '#B3000C', message: """
-                Build Failed!!
+                Build Failed for PR: ${env.PR_TITLE}
+                Branch: ${env.PR_BRANCH}
+                Commit: ${env.PR_COMMIT}
+                Pull Request Link: ${PR_URL}
+                Author: ${env.PR_AUTHOR}
                 Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)
             """, channel: 'camu-ci-alerts')
         }
