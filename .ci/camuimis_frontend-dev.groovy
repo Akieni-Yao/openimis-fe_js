@@ -31,7 +31,7 @@ pipeline {
             printContributedVariables: true,
             printPostContent: true,
             regexpFilterText: '$PR_ACTION$PR_MERGED$PR_BRANCH',
-            regexpFilterExpression: '^closedtrueakieni$',
+            regexpFilterExpression: '^closedtruedevelop$',
             silentResponse: false
         )
     }
@@ -40,7 +40,7 @@ pipeline {
             steps {
                 checkout([
                     $class: 'GitSCM',
-                    branches: [[name: "*/akieni"]],
+                    branches: [[name: "*/develop"]],
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [],
                     userRemoteConfigs: [[
