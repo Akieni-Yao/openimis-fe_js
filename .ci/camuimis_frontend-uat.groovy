@@ -31,7 +31,7 @@ pipeline {
             printContributedVariables: true,
             printPostContent: true,
             regexpFilterText: '$PR_ACTION$PR_MERGED$PR_BRANCH',
-            regexpFilterExpression: '^openedfalsemain$',
+            regexpFilterExpression: '^closetruemain$',
             silentResponse: false
         )
     }
