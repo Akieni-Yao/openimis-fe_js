@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "camuimis-ui.fullname" . }}-test-connection"
+  labels:
+    {{- include "camuimis-ui.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "camuimis-ui.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
