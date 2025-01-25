@@ -6,35 +6,35 @@ pipeline {
         REPO_NAME = "engineering"
         AWS_REGION = "eu-west-3"
         GH_TOKEN = credentials('GH_TOKEN')
-        REACT_APP_ABIS_URL = "https://abis.akieni.tech/public/enrollment/index.html#/enroll"
-        REACT_APP_GED_URL = "https://uat-ged.akieni.tech/backend/cnss"
+        REACT_APP_ABIS_URL = "https://abis.camu.cg/public/enrollment/index.html#/enroll"
+        REACT_APP_GED_URL = "https://dms.camu.cg/backend/cnss"
         REACT_APP_USERNAME = credentials('GED_USERNAME_UAT')
         REACT_APP_PASSWORD = credentials('GED_PASSWORD_UAT')
-        REACT_APP_ABIS_VERIFICATION_URL = "https://abis.akieni.tech/public/enrollment/index.html#/verify"
+        REACT_APP_ABIS_VERIFICATION_URL = "https://abis.camu.cg/public/enrollment/index.html#/verify"
         REACT_APP_IDLE_LOGOUT_TIME="1800000"
     }
-    triggers {
-        // Use a generic webhook trigger and set conditions within the pipeline
-        GenericTrigger(
-            genericVariables: [
-                [key: 'PR_ACTION', value: '$.action'],
-                [key: 'PR_MERGED', value: '$.pull_request.merged'],
-                [key: 'PR_TITLE', value: '$.pull_request.title'],
-                [key: 'PR_BRANCH', value: '$.pull_request.base.ref'],
-                [key: 'PR_URL', value: '$.pull_request.html_url'],
-                [key: 'PR_AUTHOR', value: '$.pull_request.user.login'],
-                [key: 'PR_COMMIT', value: '$.pull_request.head.sha']
-            ],
-            causeString: 'Triggered by Pull Request ${PR_ACTION} action on branch: ${PR_BRANCH}',
-            token: '${WEBHOOK_TOKEN}',
-            tokenCredentialId: 'IMSFE_WH_TOKEN',
-            printContributedVariables: true,
-            printPostContent: true,
-            regexpFilterText: '$PR_ACTION$PR_MERGED$PR_BRANCH',
-            regexpFilterExpression: '^closedtruemain$',
-            silentResponse: false
-        )
-    }
+    // triggers {
+    //     // Use a generic webhook trigger and set conditions within the pipeline
+    //     GenericTrigger(
+    //         genericVariables: [
+    //             [key: 'PR_ACTION', value: '$.action'],
+    //             [key: 'PR_MERGED', value: '$.pull_request.merged'],
+    //             [key: 'PR_TITLE', value: '$.pull_request.title'],
+    //             [key: 'PR_BRANCH', value: '$.pull_request.base.ref'],
+    //             [key: 'PR_URL', value: '$.pull_request.html_url'],
+    //             [key: 'PR_AUTHOR', value: '$.pull_request.user.login'],
+    //             [key: 'PR_COMMIT', value: '$.pull_request.head.sha']
+    //         ],
+    //         causeString: 'Triggered by Pull Request ${PR_ACTION} action on branch: ${PR_BRANCH}',
+    //         token: '${WEBHOOK_TOKEN}',
+    //         tokenCredentialId: 'IMSFE_WH_TOKEN',
+    //         printContributedVariables: true,
+    //         printPostContent: true,
+    //         regexpFilterText: '$PR_ACTION$PR_MERGED$PR_BRANCH',
+    //         regexpFilterExpression: '^closedtruemain$',
+    //         silentResponse: false
+    //     )
+    // }
     stages{
         stage('SCM Checkout') {
             steps {
@@ -75,7 +75,7 @@ pipeline {
             steps {
                 script {
                     // Extract the appVersion from Chart.yaml
-                    def chartFile = '.cd/uat/Chart.yaml'
+                    def chartFile = '.cd/prod/Chart.yaml'
                     def appVersion = sh(script: "yq e '.appVersion' ${chartFile}", returnStdout: true).trim()
                     
                     // Set the appVersion as an environment variable
@@ -86,7 +86,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def IMAGE_TAG = "ims_frontend_uat-v${env.APP_VERSION}"
+                    def IMAGE_TAG = "ims_frontend_prod-v${env.APP_VERSION}"
                     def IMAGE_NAME = "${ECR_REGISTRY}/${REPO_NAME}"
                     def FULL_IMAGE_NAME = "${IMAGE_NAME}:${IMAGE_TAG}"
 
@@ -116,7 +116,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    def IMAGE_TAG = "ims_frontend_uat-v${env.APP_VERSION}"
+                    def IMAGE_TAG = "ims_frontend_prod-v${env.APP_VERSION}"
                     def IMAGE_NAME = "${ECR_REGISTRY}/${REPO_NAME}"
                     def FULL_IMAGE_NAME = "${IMAGE_NAME}:${IMAGE_TAG}"
                     
@@ -129,47 +129,39 @@ pipeline {
                 }
             }
         }
-        stage('Deploy IMS Uat Frontend') {
-            environment {
-                ARGOCD_SERVER = credentials('argocd-server')
-                ARGOCD_APP = "ims-frontend-uat"
-            }
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'argocd-cred', usernameVariable: "ARGOCD_USERNAME", passwordVariable: "ARGOCD_PASSWORD")]) {
-                    script {
-                        def server = 'https://argocd.akieni.tech'
-                        sh '''
-                            echo "Logging into ArgoCD server ${server}"
-                            argocd login argocd.akieni.tech --username ${ARGOCD_USERNAME} --password ${ARGOCD_PASSWORD} --grpc-web
-                        '''
-                        sh '''
-                            echo "Synchronizing ArgoCD app: ${ARGOCD_APP}"
-                            argocd app set ${ARGOCD_APP} --helm-set image.tag=${IMAGE_TAG} --grpc-web
-                            argocd app sync ${ARGOCD_APP} --grpc-web
-                        '''
-                    }
-                }
-            }
-        }
+        // stage('Deploy IMS prod Frontend') {
+        //     environment {
+        //         ARGOCD_SERVER = credentials('argocd-server')
+        //         ARGOCD_APP = "ims-frontend-prod"
+        //     }
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'argocd-cred', usernameVariable: "ARGOCD_USERNAME", passwordVariable: "ARGOCD_PASSWORD")]) {
+        //             script {
+        //                 def server = 'https://argocd.akieni.tech'
+        //                 sh '''
+        //                     echo "Logging into ArgoCD server ${server}"
+        //                     argocd login argocd.akieni.tech --username ${ARGOCD_USERNAME} --password ${ARGOCD_PASSWORD} --grpc-web
+        //                 '''
+        //                 sh '''
+        //                     echo "Synchronizing ArgoCD app: ${ARGOCD_APP}"
+        //                     argocd app set ${ARGOCD_APP} --helm-set image.tag=${IMAGE_TAG} --grpc-web
+        //                     argocd app sync ${ARGOCD_APP} --grpc-web
+        //                 '''
+        //             }
+        //         }
+        //     }
+        // }
     }
     post {
         success {
-            slackSend(color: '#00B32C', message: """
-                Build Succeeded for PR: ${env.PR_TITLE}
-                Branch: ${env.PR_BRANCH}
-                Commit: ${env.PR_COMMIT}
-                Pull Request Link: ${PR_URL}
-                Author: ${env.PR_AUTHOR}
+            slackSend(color: '#ADD8E6', message: """
+                Build Succeeded for Production Environment
                 Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)
             """, channel: 'camu-ci-alerts')
         }
         failure {
             slackSend(color: '#B3000C', message: """
-                Build Failed for PR: ${env.PR_TITLE}
-                Branch: ${env.PR_BRANCH}
-                Commit: ${env.PR_COMMIT}
-                Pull Request Link: ${PR_URL}
-                Author: ${env.PR_AUTHOR}
+                Build Failed for Production Environment
                 Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)
             """, channel: 'camu-ci-alerts')
         }
