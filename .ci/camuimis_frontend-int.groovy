@@ -54,8 +54,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        cp openimis-release.json openimis.json
-                        cp package-release.json package.json
+                        cp openimis-prerelease.json openimis.json
+                        cp package-prerelease.json package.json
                         sed -i "s|git+https://github.com|git+https://apps-sa:${GH_TOKEN}@github.com|g" openimis.json
                     '''
                 }
