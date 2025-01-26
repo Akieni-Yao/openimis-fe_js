@@ -1,9 +1,9 @@
 # Default values for camuimis-ui.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-Name: ims-frontend-prod
+Name: ims-frontend-uat
 
-nameOverride: ims-frontend-prod
+nameOverride: ims-frontend-uat
 replicaCount: 1
 
 image:
@@ -29,7 +29,7 @@ serviceAccount:
 
 podAnnotations: {}
 podLabels:
-  group: "camu-prod"
+  group: "camu-uat"
   app: "openims"
 
 podSecurityContext: {}
@@ -52,7 +52,7 @@ ingress:
   className: "nginx"
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
   hosts:
