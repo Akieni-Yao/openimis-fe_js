@@ -1,9 +1,9 @@
 # Default values for camuimis-ui.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-Name: ims-frontend-uat
+Name: ims-frontend-prod
 
-nameOverride: ims-frontend-uat
+nameOverride: ims-frontend-prod
 replicaCount: 1
 
 image:
@@ -29,7 +29,7 @@ serviceAccount:
 
 podAnnotations: {}
 podLabels:
-  group: "camu-uat"
+  group: "camu-prod"
   app: "openims"
 
 podSecurityContext: {}
