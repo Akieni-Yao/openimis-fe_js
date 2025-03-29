@@ -3,7 +3,7 @@ pipeline {
     environment {
         WEBHOOK_TOKEN = credentials('IMSFE_WH_TOKEN')
         ECR_REGISTRY = "767397924087.dkr.ecr.eu-west-3.amazonaws.com"
-        REPO_NAME = "engineering"
+        REPO_NAME = "engineering/camu"
         AWS_REGION = "eu-west-3"
         GH_TOKEN = credentials('GH_TOKEN')
         REACT_APP_ABIS_URL = "https://abis.camu.cg/public/enrollment/index.html#/enroll"
@@ -129,41 +129,51 @@ pipeline {
                 }
             }
         }
-        // stage('Deploy IMS prod Frontend') {
-        //     environment {
-        //         ARGOCD_SERVER = credentials('argocd-server')
-        //         ARGOCD_APP = "ims-frontend-prod"
-        //     }
-        //     steps {
-        //         withCredentials([usernamePassword(credentialsId: 'argocd-cred', usernameVariable: "ARGOCD_USERNAME", passwordVariable: "ARGOCD_PASSWORD")]) {
-        //             script {
-        //                 def server = 'https://argocd.akieni.tech'
-        //                 sh '''
-        //                     echo "Logging into ArgoCD server ${server}"
-        //                     argocd login argocd.akieni.tech --username ${ARGOCD_USERNAME} --password ${ARGOCD_PASSWORD} --grpc-web
-        //                 '''
-        //                 sh '''
-        //                     echo "Synchronizing ArgoCD app: ${ARGOCD_APP}"
-        //                     argocd app set ${ARGOCD_APP} --helm-set image.tag=${IMAGE_TAG} --grpc-web
-        //                     argocd app sync ${ARGOCD_APP} --grpc-web
-        //                 '''
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Update Application Image') {
+            environment {
+                VAULT_ADDR = 'https://vault.akieni.tech'
+                VAULT_SECRETS_PATH = 'akieni/prod/camu-prod/ims-frontend-prod'
+            }
+            steps{
+                script {
+                    def secrets = []
+                    withVault([vaultSecrets: secrets]) {
+                        sh 'vault login -method=aws role=jenkins-role'
+                        sh 'vault kv patch ${VAULT_SECRETS_PATH} IMAGE_TAG=${IMAGE_TAG}'
+                    }
+                }
+            }
+        }
+        stage('Deploy IMS prod Frontend') {
+            environment {
+                ARGOCD_SERVER = credentials('argocd-server')
+                ARGOCD_APP = "ims-frontend-prod"
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'argocd-cred', usernameVariable: "ARGOCD_USERNAME", passwordVariable: "ARGOCD_PASSWORD")]) {
+                    script {
+                        def server = 'https://argocd.akieni.tech'
+                        sh '''
+                            echo "Logging into ArgoCD server ${server}"
+                            argocd login argocd.akieni.tech --username ${ARGOCD_USERNAME} --password ${ARGOCD_PASSWORD} --grpc-web
+                        '''
+                        sh '''
+                            echo "Synchronizing ArgoCD app: ${ARGOCD_APP}"
+                            argocd app diff ${ARGOCD_APP} --hard-refresh --grpc-web
+                        '''
+                    }
+                }
+            }
+        }
     }
     post {
         success {
-            slackSend(color: '#ADD8E6', message: """
-                Build Succeeded for Production Environment
-                Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)
-            """, channel: 'camu-ci-alerts')
+            slackSend(color: '#ADD8E6', message: """Build Succeeded for Production Environment
+Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)""", channel: 'camu-ci-alerts')
         }
         failure {
-            slackSend(color: '#B3000C', message: """
-                Build Failed for Production Environment
-                Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)
-            """, channel: 'camu-ci-alerts')
+            slackSend(color: '#B3000C', message: """Build Failed for Production Environment
+Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)""", channel: 'camu-ci-alerts')
         }
         cleanup {
             cleanWs()
