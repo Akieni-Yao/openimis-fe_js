@@ -41,9 +41,6 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-            # - name: https
-            #   containerPort: {{ .Values.service.httpsPort }}
-            #   protocol: TCP
           lifecycle:
             {{- toYaml .Values.lifecycle | nindent 12 }}
           {{- if .Values.healthchecks.enabled }}
