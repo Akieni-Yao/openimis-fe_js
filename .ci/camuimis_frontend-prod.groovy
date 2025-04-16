@@ -13,28 +13,24 @@ pipeline {
         REACT_APP_ABIS_VERIFICATION_URL = "https://abis.camu.cg/public/enrollment/index.html#/verify"
         REACT_APP_IDLE_LOGOUT_TIME="1800000"
     }
-    // triggers {
-    //     // Use a generic webhook trigger and set conditions within the pipeline
-    //     GenericTrigger(
-    //         genericVariables: [
-    //             [key: 'PR_ACTION', value: '$.action'],
-    //             [key: 'PR_MERGED', value: '$.pull_request.merged'],
-    //             [key: 'PR_TITLE', value: '$.pull_request.title'],
-    //             [key: 'PR_BRANCH', value: '$.pull_request.base.ref'],
-    //             [key: 'PR_URL', value: '$.pull_request.html_url'],
-    //             [key: 'PR_AUTHOR', value: '$.pull_request.user.login'],
-    //             [key: 'PR_COMMIT', value: '$.pull_request.head.sha']
-    //         ],
-    //         causeString: 'Triggered by Pull Request ${PR_ACTION} action on branch: ${PR_BRANCH}',
-    //         token: '${WEBHOOK_TOKEN}',
-    //         tokenCredentialId: 'IMSFE_WH_TOKEN',
-    //         printContributedVariables: true,
-    //         printPostContent: true,
-    //         regexpFilterText: '$PR_ACTION$PR_MERGED$PR_BRANCH',
-    //         regexpFilterExpression: '^closedtruemain$',
-    //         silentResponse: false
-    //     )
-    // }
+    triggers {
+        GenericTrigger(
+            genericVariables: [
+                [key: 'JIRA_EVENT_TYPE', value: '$.webhookEvent'],
+                [key: 'JIRA_ISSUE_KEY', value: '$.issue.key'],
+                [key: 'JIRA_ISSUE_STATUS', value: '$.issue.fields.status.name'],
+                [key: 'JIRA_ISSUE_TYPE', value: '$.issue.fields.issuetype.name']
+            ],
+            causeString: 'Triggered by Jira ticket ${JIRA_ISSUE_KEY}',
+            token: '${WEBHOOK_TOKEN}',
+            tokenCredentialId: 'IMSFE_WH_TOKEN',
+            printContributedVariables: true,
+            printPostContent: true,
+            regexpFilterText: '$JIRA_EVENT_TYPE$JIRA_ISSUE_STATUS$JIRA_ISSUE_TYPE',
+            regexpFilterExpression: '^jira:issue_updatedApprovedStory$',
+            silentResponse: false
+        )
+    }
     stages{
         stage('SCM Checkout') {
             steps {
@@ -71,22 +67,24 @@ pipeline {
                 }
             }
         }
-        stage('Extract appVersion') {
+        stage('Set Image Version') {
             steps {
                 script {
-                    // Extract the appVersion from Chart.yaml
-                    def chartFile = '.cd/prod/Chart.yaml'
-                    def appVersion = sh(script: "yq e '.appVersion' ${chartFile}", returnStdout: true).trim()
-                    
-                    // Set the appVersion as an environment variable
-                    env.APP_VERSION = appVersion
+                    int buildNumber = BUILD_NUMBER as Integer
+                    int major = 0
+                    int minor = (buildNumber / 10).intValue()
+                    int patch = buildNumber % 10
+
+                    def imageVersion = "v${major}.${minor}.${patch}"
+                    env.IMAGE_VERSION = imageVersion
+                    echo "Setting image version to ${IMAGE_VERSION}"
                 }
             }
         }
         stage('Build Docker Image') {
             steps {
                 script {
-                    def IMAGE_TAG = "ims_frontend_prod-v${env.APP_VERSION}"
+                    def IMAGE_TAG = "ims_frontend_prod-v${env.IMAGE_VERSION}"
                     def IMAGE_NAME = "${ECR_REGISTRY}/${REPO_NAME}"
                     def FULL_IMAGE_NAME = "${IMAGE_NAME}:${IMAGE_TAG}"
 
@@ -116,7 +114,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    def IMAGE_TAG = "ims_frontend_prod-v${env.APP_VERSION}"
+                    def IMAGE_TAG = "ims_frontend_prod-v${env.IMAGE_VERSION}"
                     def IMAGE_NAME = "${ECR_REGISTRY}/${REPO_NAME}"
                     def FULL_IMAGE_NAME = "${IMAGE_NAME}:${IMAGE_TAG}"
                     
@@ -159,7 +157,7 @@ pipeline {
                         '''
                         sh '''
                             echo "Synchronizing ArgoCD app: ${ARGOCD_APP}"
-                            argocd app diff ${ARGOCD_APP} --hard-refresh --grpc-web
+                            argocd app diff ${ARGOCD_APP} --hard-refresh --grpc-web || true
                         '''
                     }
                 }
