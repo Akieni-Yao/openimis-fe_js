@@ -126,9 +126,15 @@ env:
     value: >-
       https://abis.camu.cg/public/enrollment/index.html#/enroll/applicant-detail
   - name: REACT_APP_USERNAME
-    value: <path:akieni/data/prod/camu-prod/ims-frontend-prod#REACT_APP_USERNAME>
+    valueFrom:
+      secretKeyRef:
+        name: ims-frontend-prod
+        key: REACT_APP_USERNAME
   - name: REACT_APP_PASSWORD
-    value: <path:akieni/data/prod/camu-prod/ims-frontend-prod#REACT_APP_PASSWORD>
+    valueFrom:
+      secretKeyRef:
+        name: ims-frontend-prod
+        key: REACT_APP_PASSWORD
 
 lifecycle:
   preStop:
@@ -138,6 +144,12 @@ lifecycle:
       - -c
       - "sleep 10"
       
+secrets:
+  enabled: true
+  data:
+    REACT_APP_USERNAME: <path:akieni/data/prod/camu-prod/ims-frontend-prod#REACT_APP_USERNAME>
+    REACT_APP_PASSWORD: <path:akieni/data/prod/camu-prod/ims-frontend-prod#REACT_APP_PASSWORD>
+
 # Additional volumes on the output Deployment definition.
 volumes:
   - name: kube-api-access
