@@ -7,10 +7,10 @@ nameOverride: ims-frontend-uat
 replicaCount: 1
 
 image:
-  repository: 767397924087.dkr.ecr.eu-west-3.amazonaws.com/engineering
+  repository: 767397924087.dkr.ecr.eu-west-3.amazonaws.com/engineering/camu
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "<path:akieni/data/uat/camu-uat/ims-frontend-uat#IMAGE_TAG>"
 
 imagePullSecrets: []
 
@@ -115,18 +115,19 @@ env:
   - name: REACT_APP_USERNAME
     valueFrom:
       secretKeyRef:
-        name: ims-frontend-secret
+        name: ims-frontend-uat
         key: REACT_APP_USERNAME
   - name: REACT_APP_PASSWORD
     valueFrom:
       secretKeyRef:
-        name: ims-frontend-secret
+        name: ims-frontend-uat
         key: REACT_APP_PASSWORD
 
-sealedsecrets:
-  encrypteddata:
-    react_app_password: AgAt/liEG1bH7eGSPL9OqY4IJXmS1KkWo8SSgT3yse3HI4brDFE+URlWzwzJv9Ih95aQo1sfsrBVmtAwTlGLrl1Faa1DaSoCGrqalh2p5FthRgeqlm/PtRawgYShXUbJ51KM8jasdGRToJKlfpCIUqpCiiaPkwijjSKX3KOyHyxiT+6ZfjSZ8BPE+bmFpbJzgaF5Sbka8bClhSsXj3djSfoSD5tKaG2EF04QyfTYzp+QXmq5Jp+tv7+E7Uo6tb+IZCFQIxIXHuFdwbB4ai21Azt5RDOqvIaG2Cfs/A5UDr+zEWNYmidtgz3VNsfJOM18cvVCD5NLj304+M8WKIN6RBISz2O9ncSbw8i1V6bklv5557cZQSZAr0DVGYBXHA4oN+SCEoD0C6lMC1oarq++7P1GUWKs5IyA0oJVRgD72IoX0uDFwYreve6oSabEi5ulZPBjCqUEEgzLOx85k7OJ+5BF1JGbA9/JMSk53THfUDU2jSM6Ip/Jgk/K4CFHpYo+j2qOTNgUB1QrUqpC87oQK4bN6ycaxPd699qng7bwsIGn4ZkV37qls6XzvldVfNRzEJaGHUWxz7bkzI5dgsG993g6NZi1bov/pAQ4SgXC66p9gnLvVu3QO2RbBEBqe51NZydax3osBLvEBJQ/OSOhOlZ2cEkim4mLpm64abtSAIRxhsNezkJz8+LdDjls57+SYCfwEmh29ETG7mA=
-    react_app_username: AgB2cdYAp1ifoFhfRe10Em6+gpZ/M5vc6mRMaXo00Omu1pO42GxETM4/d5IrflHS78MaElMq0WlPVTxO7daFF4Mecbce80U0WhdqSTT8jfI4UUu8pxXd7lqtQQ+RTPtxqFuC5+zB10RkqZu2AMS8ZTCiyVIOjKsLohdmIsEVh4PVWPXay3Ijo735h/c/WCYX3KBgxilSzaYt1sk3wkdYRqjMWfuBKsxfnbJAG9WzihFxNZhDntf16z59ggxV1wwfJDG1d/3PRwHk9LAKM9Hlrmld89UOs7WFLlZ23bu7+X9ZFW3M6oaqRptFkz6E0zCk8NUpvRR+g+zLz+ZNvBa5ZYrGGrZksj7oYV8npIBLTVr7a6tFvuq1NKAxsyc8sTjC2Gnf5UV9zoyFHeA10P2RjBC3S4nY2b/Wu8BDImZDDzRSsYgXqNJQ4M/ejFVwOvrPi2nS8QQ3g8tH9QsUGXqrw3N1UDB/HO6O0UJyz0dH1pAn+78nPGH/NsEo1DEdeHhO4cWEL1o9o2KNNl//5kD26WvFzpVnArrz8zbzVm5UKSi7mvziatxQXmWNhu7uorCbSIXcoX/HOIvLmAVCMK7YMvQy9Ng1M6A9gIiL4T1jgwSrqinOmVrH9yYF/7r0H//szVff53L6H4LONkiaFXWcgv9IpYekTJvGhSc7QBphDbFFwXYIk+wTw4cEunEF9WFbZspazD1PuWf2xLe6kc4=
+secrets:
+  enabled: true
+  data:
+    REACT_APP_USERNAME: <path:akieni/data/uat/camu-uat/ims-frontend-uat#REACT_APP_USERNAME>
+    REACT_APP_PASSWORD: <path:akieni/data/uat/camu-uat/ims-frontend-uat#REACT_APP_PASSWORD>
 
 lifecycle:
   preStop:

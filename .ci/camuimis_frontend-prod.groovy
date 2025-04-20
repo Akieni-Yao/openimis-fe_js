@@ -84,7 +84,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def IMAGE_TAG = "ims_frontend_prod-v${env.IMAGE_VERSION}"
+                    def IMAGE_TAG = "ims_frontend_prod-${env.IMAGE_VERSION}"
                     def IMAGE_NAME = "${ECR_REGISTRY}/${REPO_NAME}"
                     def FULL_IMAGE_NAME = "${IMAGE_NAME}:${IMAGE_TAG}"
 
@@ -114,7 +114,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    def IMAGE_TAG = "ims_frontend_prod-v${env.IMAGE_VERSION}"
+                    def IMAGE_TAG = "ims_frontend_prod-${env.IMAGE_VERSION}"
                     def IMAGE_NAME = "${ECR_REGISTRY}/${REPO_NAME}"
                     def FULL_IMAGE_NAME = "${IMAGE_NAME}:${IMAGE_TAG}"
                     

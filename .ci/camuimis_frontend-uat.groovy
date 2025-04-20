@@ -3,7 +3,7 @@ pipeline {
     environment {
         WEBHOOK_TOKEN = credentials('IMSFE_WH_TOKEN')
         ECR_REGISTRY = "767397924087.dkr.ecr.eu-west-3.amazonaws.com"
-        REPO_NAME = "engineering"
+        REPO_NAME = "engineering/camu"
         AWS_REGION = "eu-west-3"
         GH_TOKEN = credentials('GH_TOKEN')
         REACT_APP_ABIS_URL = "https://abis.akieni.tech/public/enrollment/index.html#/enroll"
@@ -71,22 +71,24 @@ pipeline {
                 }
             }
         }
-        stage('Extract appVersion') {
+        stage('Set Image Version') {
             steps {
                 script {
-                    // Extract the appVersion from Chart.yaml
-                    def chartFile = '.cd/uat/Chart.yaml'
-                    def appVersion = sh(script: "yq e '.appVersion' ${chartFile}", returnStdout: true).trim()
-                    
-                    // Set the appVersion as an environment variable
-                    env.APP_VERSION = appVersion
+                    int buildNumber = BUILD_NUMBER as Integer
+                    int major = 0
+                    int minor = (buildNumber / 10).intValue()
+                    int patch = buildNumber % 10
+
+                    def imageVersion = "v${major}.${minor}.${patch}"
+                    env.IMAGE_VERSION = imageVersion
+                    echo "Setting image version to ${IMAGE_VERSION}"
                 }
             }
         }
         stage('Build Docker Image') {
             steps {
                 script {
-                    def IMAGE_TAG = "ims_frontend_uat-v${env.APP_VERSION}"
+                    def IMAGE_TAG = "ims_frontend_uat-${env.APP_VERSION}"
                     def IMAGE_NAME = "${ECR_REGISTRY}/${REPO_NAME}"
                     def FULL_IMAGE_NAME = "${IMAGE_NAME}:${IMAGE_TAG}"
 
@@ -116,7 +118,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    def IMAGE_TAG = "ims_frontend_uat-v${env.APP_VERSION}"
+                    def IMAGE_TAG = "ims_frontend_uat-${env.IMAGE_VERSION}"
                     def IMAGE_NAME = "${ECR_REGISTRY}/${REPO_NAME}"
                     def FULL_IMAGE_NAME = "${IMAGE_NAME}:${IMAGE_TAG}"
                     
@@ -126,6 +128,21 @@ pipeline {
                         aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
                         docker push ${FULL_IMAGE_NAME}
                     """
+                }
+            }
+        }
+        stage('Update Application Image') {
+            environment {
+                VAULT_ADDR = 'https://vault.akieni.tech'
+                VAULT_SECRETS_PATH = 'akieni/uat/camu-uat/ims-frontend-uat'
+            }
+            steps{
+                script {
+                    def secrets = []
+                    withVault([vaultSecrets: secrets]) {
+                        sh 'vault login -method=aws role=jenkins-role'
+                        sh 'vault kv patch ${VAULT_SECRETS_PATH} IMAGE_TAG=${IMAGE_TAG}'
+                    }
                 }
             }
         }
@@ -143,8 +160,12 @@ pipeline {
                             argocd login argocd.akieni.tech --username ${ARGOCD_USERNAME} --password ${ARGOCD_PASSWORD} --grpc-web
                         '''
                         sh '''
+                            echo "Refreshing values for ArgoCD app: ${ARGOCD_APP}"
+                            argocd app diff ${ARGOCD_APP} --hard-refresh --grpc-web || true
+                            sleep 10
+                        '''
+                        sh '''
                             echo "Synchronizing ArgoCD app: ${ARGOCD_APP}"
-                            argocd app set ${ARGOCD_APP} --helm-set image.tag=${IMAGE_TAG} --grpc-web
                             argocd app sync ${ARGOCD_APP} --grpc-web
                         '''
                     }
@@ -154,24 +175,20 @@ pipeline {
     }
     post {
         success {
-            slackSend(color: '#00B32C', message: """
-                Build Succeeded for PR: ${env.PR_TITLE}
-                Branch: ${env.PR_BRANCH}
-                Commit: ${env.PR_COMMIT}
-                Pull Request Link: ${PR_URL}
-                Author: ${env.PR_AUTHOR}
-                Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)
-            """, channel: 'camu-ci-alerts')
+            slackSend(color: '#00B32C', message: """Build Succeeded for PR: ${env.PR_TITLE}
+Branch: ${env.PR_BRANCH}
+Commit: ${env.PR_COMMIT}
+Pull Request Link: ${PR_URL}
+Author: ${env.PR_AUTHOR}
+Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)""", channel: 'camu-ci-alerts')
         }
         failure {
-            slackSend(color: '#B3000C', message: """
-                Build Failed for PR: ${env.PR_TITLE}
-                Branch: ${env.PR_BRANCH}
-                Commit: ${env.PR_COMMIT}
-                Pull Request Link: ${PR_URL}
-                Author: ${env.PR_AUTHOR}
-                Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)
-            """, channel: 'camu-ci-alerts')
+            slackSend(color: '#B3000C', message: """Build Failed for PR: ${env.PR_TITLE}
+Branch: ${env.PR_BRANCH}
+Commit: ${env.PR_COMMIT}
+Pull Request Link: ${PR_URL}
+Author: ${env.PR_AUTHOR}
+Job: '${env.JOB_NAME} [Build Number: ${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Click Here to view more>)""", channel: 'camu-ci-alerts')
         }
         cleanup {
             cleanWs()
