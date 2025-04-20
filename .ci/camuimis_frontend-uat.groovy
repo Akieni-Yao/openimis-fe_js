@@ -88,7 +88,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def IMAGE_TAG = "ims_frontend_uat-${env.APP_VERSION}"
+                    def IMAGE_TAG = "ims_frontend_uat-${env.IMAGE_VERSION}"
                     def IMAGE_NAME = "${ECR_REGISTRY}/${REPO_NAME}"
                     def FULL_IMAGE_NAME = "${IMAGE_NAME}:${IMAGE_TAG}"
 
