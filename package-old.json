@@ -1,0 +1,88 @@
+{
+    "name": "@openimis/fe",
+    "version": "23.04",
+    "license": "AGPL-3.0-only",
+    "proxy": "http://localhost:8000/",
+    "homepage": "http://localhost:3000/front",
+    "dependencies": {
+      "@date-io/core": "^1.3.13",
+      "@date-io/moment": "^1.3.13",
+      "@material-ui/core": "^4.9.14",
+      "@material-ui/icons": "^4.9.1",
+      "@material-ui/lab": "^4.0.0-alpha.58",
+      "@material-ui/pickers": "^3.2.10",
+      "classnames": "^2.2.6",
+      "clsx": "^1.1.1",
+      "lodash": "^4.17.15",
+      "lodash-uuid": "^0.0.3",
+      "moment": "^2.25.3",
+      "prop-types": "^15.7.2",
+      "react": "^17.0.2",
+      "react-autosuggest": "^10.0.2",
+      "react-dom": "^17.0.2",
+      "react-helmet": "^6.1.0",
+      "react-intl": "^5.8.1",
+      "react-redux": "^7.2.0",
+      "react-scripts": "4.0.3",
+      "redux": "^4.0.5",
+      "redux-api-middleware": "^3.2.1",
+      "redux-thunk": "^2.3.0",
+      "shelljs": "^0.8.4",
+      "@openimis/fe-core": "git+https://github.com/Akieni-Yao/openimis-fe-core_js.git#akieni",
+      "@openimis/fe-home": "git+https://github.com/Akieni-Yao/openimis-fe-home_js.git#akieni",
+      "@openimis/fe-location": "git+https://github.com/Akieni-Yao/openimis-fe-location_js.git#akieni",
+      "@openimis/fe-insuree": "git+https://github.com/Akieni-Yao/openimis-fe-insuree_js.git#akieni",
+      "@openimis/fe-medical": "git+https://github.com/Akieni-Yao/openimis-fe-medical_js.git#akieni",
+      "@openimis/fe-medical_pricelist": "git+https://github.com/Akieni-Yao/openimis-fe-medical_pricelist_js.git#akieni",
+      "@openimis/fe-product": "git+https://github.com/Akieni-Yao/openimis-fe-product_js.git#akieni",
+      "@openimis/fe-policy": "git+https://github.com/Akieni-Yao/openimis-fe-policy_js.git#akieni",
+      "@openimis/fe-payer": "git+https://github.com/Akieni-Yao/openimis-fe-payer.git#akieni",
+      "@openimis/fe-contribution": "git+https://github.com/Akieni-Yao/openimis-fe-contribution_js.git#akieni",
+      "@openimis/fe-claim": "git+https://github.com/Akieni-Yao/openimis-fe-claim_js.git#akieni",
+      "@openimis/fe-claim_batch": "git+https://github.com/Akieni-Yao/openimis-fe-claim_batch.git#akieni",
+      "@openimis/fe-admin": "git+https://github.com/Akieni-Yao/openimis-fe-admin_js.git#akieni",
+      "@openimis/fe-tools": "git+https://github.com/Akieni-Yao/openimis-fe-tools_js.git#akieni",
+      "@openimis/fe-profile": "git+https://github.com/Akieni-Yao/openimis-fe-profile_js.git#akieni",
+      "@openimis/fe-language_fr": "git+https://github.com/Akieni-Yao/openimis-fe-language_fr_js.git#akieni",
+      "@openimis/fe-calculation": "git+https://github.com/Akieni-Yao/openimis-fe-calculation.git#akieni",
+      "@openimis/fe-policyholder": "git+https://github.com/Akieni-Yao/openimis-fe-policyholder_js.git#akieni",
+      "@openimis/fe-contribution_plan": "git+https://github.com/Akieni-Yao/openimis-fe-contribution_plan_js.git#akieni",
+      "@openimis/fe-contract": "git+https://github.com/Akieni-Yao/openimis-fe-contract_js.git#akieni",
+      "@openimis/fe-invoice": "git+https://github.com/Akieni-Yao/openimis-fe-invoice_js.git#akieni",
+      "@openimis/fe-payment": "git+https://github.com/Akieni-Yao/openimis-fe-payment_js..git#akieni"
+    },
+    "scripts": {
+      "start": "react-scripts start",
+      "build": "GENERATE_SOURCEMAP=false  react-scripts build",
+      "load-config": "node ./openimis-config.js",
+      "postinstall": "node script/postinstall.js",
+      "format": "prettier src -w",
+      "check-package": "node script/check-package.js"
+    },
+    "eslintConfig": {
+      "extends": [
+        "react-app"
+      ],
+      "rules": {
+        "space-before-function-paren": 0,
+        "react/jsx-boolean-value": 0
+      }
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    },
+    "devDependencies": {
+      "http-proxy-middleware": "^2.0.1",
+      "prettier": "^2.3.2"
+    }
+  }
+  

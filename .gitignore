@@ -5,8 +5,6 @@ modules-installs.txt
 modules-links.txt
 modules-removes.txt
 modules-unlinks.txt
-src/modules.js
-src/locales.js
 .idea
 yarn.lock
 .env

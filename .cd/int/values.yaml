@@ -1,0 +1,170 @@
+# Default values for camuimis-ui.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+Name: ims-frontend-int
+
+nameOverride: ims-frontend-int
+replicaCount: 1
+
+image:
+  repository: 767397924087.dkr.ecr.eu-west-3.amazonaws.com/engineering
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+
+# fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels:
+  group: "camu-int"
+  app: "openims"
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: int-ims.akieni.tech
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+   - secretName: akieni-tech-cert
+     hosts:
+       - int-ims.akieni.tech
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 1
+  #   memory: 500Mi
+  # requests:
+  #   cpu: ""
+  #   memory: 1Gi
+healthchecks:
+  enabled: false
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 70
+
+env:
+  - name: MY_POD_NAME
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: metadata.name
+  - name:  REACT_APP_API_URL
+    value:  api
+  - name: NEW_OPENIMIS_HOST
+    value: int-ims.akieni.tech
+  - name: REACT_APP_ABIS_URL
+    value: >-
+      https://abis.akieni.com/public/enrollment/index.html#/enroll/applicant-detail
+  - name: REACT_APP_GED_URL
+    value: https://int-ged.camu.cg/backend/cnss
+  - name: REACT_APP_ABIS_VERIFICATION_URL
+    value: >-
+      https://abis.akieni.com/public/enrollment/index.html#/enroll/applicant-detail
+  - name: REACT_APP_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: ims-frontend-secret
+        key: REACT_APP_USERNAME
+  - name: REACT_APP_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: ims-frontend-secret
+        key: REACT_APP_PASSWORD
+
+sealedsecrets:
+  encrypteddata:
+    react_app_password: AgB+0WEGsq2u7CP3zGWNmA5YLkM0dZacRqnZyyB1R5kBw5jsI1E+5wgSjudypppWl7M/TwIebLFmcgB51+MhQMFdVLBQmY4fUqRbxl6qAzgPw3Jxo4fQzfCkUCpYtXzKHeCAGU426ffGsCQwN6WlLZXyONJ4PUc+kcQNGYqujkGl7N5o1J8OUOFvDzYIBqiwRHH1LGbPHBFe7lXS7LlZ1lPrDMpe1jZ43cnPm9VMnwS+i4pLUWidx2e1RAS5Asupz0wGnBAKMT8I2G9daVH+D7V26c4Kg+/BlPg0SE+N/SYi78YENfsktQJsQrbrZSXhGEPDHrPgwAVjSwOZwY5m9ZOq21fRx7O8eFU7FK5PIgi6hr8zfe24dWrrvu2qb7xEqcW2R3RsFPd5sc/0mAbBoyhPk5hYoCQ3cHE4UN7b5OEoEMh8S4vPiOAqQpNVTlku4XshP/kPDOckUd82Gv0+6Mt1PXpX4JGM0i5s1mF5bX7QZ1PQPI/FA2J3sEA3f/QmUnB/o0g3/P1dlBQdInwWlqRreMo6vi8LyfHAm/6eIDlwYPxtbmvJcX4QMuQI1AKX5Z+KXmpvPXSiYa/CEdrE9J1O2ORqdGHoLFWk4tb2/2GRQYfigEShMSXuXvpagBXWjkthAldQlmn1FdpXKZ9DgLUCWomFosRARHHiKhv1x3FPgUbRU4JJLkAIQqnEexZO/NdjXDx/toeX3Z8=
+    react_app_username: AgAIaqvj/NXjQmQeGWd0kaUnhdKgu8cEtYYoTR0bGBUhThwaxRy98fYb99wAU37Fv2OeA7IxBiHjuCATVTrHbQxos6u/2JFqEP/YMRWLML3ldz/KsI0l+v2e4OadRtJ5rOuBQmperlbD9EfqqBpW8cl8/Gzfb/4erZyb8oVvaN+qj7/9GHn1i55QWyezH2e7wCiWuZzp+In1qbXe5xnwACOXHAKsw+rmTEqpr16F3jqWMi3TRDpqA9BgWOpK3MrfP/18d2KW2eA5fFcI9Rz7A24NifHa2kZ6dkkmwSGf+86e7xfnbWzW6R95jvHDnZOrC6zmaY5pgGssZrrGFY6nzm1CAAH9k1Iupp889gkbhybZQcJYnhIw3EJny2m9Pw3dOlGCoetrOkUXCcKsQRUj1ClUcD5V9b8JrU4VSPOFMSu6leieyy4MKTu35GHr13wFjyvDSAuEUADwHUKZOEiyhb249P2jiNuCA3EgRvyWG37D8Kg8ELMzFUTw2nvRK+xEmj0J5kAwC2qbZ6C62Z9jHr3Qg205LXZcmfrBvpaLEtsDgo7BDm2ylOphBclqvwAmT8HSLf5PcJWjjVZp07YILezDFgsasBAx5cOTT223XCWd1oxmAL4owrp/MuQjlCs4hjR3dOHsqjOq952jBKvQzgBKem2sq9xAe9oyUyH2NdixJjozaDxrWcZiz7h8L/eAY0j+pxXsqciQLxetlxQ=
+
+lifecycle:
+  preStop:
+    exec:
+      command:
+      - sh
+      - -c
+      - "sleep 10"
+      
+# Additional volumes on the output Deployment definition.
+volumes:
+  - name: kube-api-access-dxv4d
+    projected:
+      sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            name: kube-root-ca.crt
+            items:
+              - key: ca.crt
+                path: ca.crt
+        - downwardAPI:
+            items:
+              - path: namespace
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+      defaultMode: 420
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts:
+  - name: kube-api-access-dxv4d
+    readOnly: true
+    mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

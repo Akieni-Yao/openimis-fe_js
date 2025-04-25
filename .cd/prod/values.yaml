@@ -1,0 +1,202 @@
+# Default values for camuimis-ui.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+Name: ims-frontend-prod
+
+nameOverride: ims-frontend-prod
+replicaCount: 1
+
+image:
+  repository: 767397924087.dkr.ecr.eu-west-3.amazonaws.com/engineering/camu
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "<path:akieni/data/prod/camu-prod/ims-frontend-prod#IMAGE_TAG>"
+
+imagePullSecrets: []
+
+# fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels:
+  group: "camu"
+  app: "openims-fe"
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #     - "ALL"
+  #   add:
+  #     - "NET_BIND_SERVICE"    # Allow binding to privileged ports (80/443)
+  #     - "CHOWN"              # Allow changing ownership of files
+  #     - "SETGID"             # Allow changing group ID
+  #     - "SETUID"             # Allow changing user ID
+  # readOnlyRootFilesystem: false
+  # runAsNonRoot: true
+  # runAsUser: 101
+  # runAsGroup: 101
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: ims.camu.cg
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+   - secretName: ims-camu-cg-tls
+     hosts:
+       - ims.camu.cg
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 500Mi
+  requests:
+    cpu: 200m
+    memory: 300Mi
+
+healthchecks:
+  enabled: true
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 3
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 85
+  targetMemoryUtilizationPercentage: 85
+
+env:
+  - name: MY_POD_NAME
+    valueFrom:
+      fieldRef:
+        apiVersion: v1
+        fieldPath: metadata.name
+  - name:  REACT_APP_API_URL
+    value:  api
+  - name: NEW_OPENIMIS_HOST
+    value: ims.camu.cg
+  - name: REACT_APP_ABIS_URL
+    value: >-
+      https://abis.camu.cg/public/enrollment/index.html#/enroll/applicant-detail
+  - name: REACT_APP_GED_URL
+    value: https://dms.camu.cg/backend/cnss
+  - name: REACT_APP_ABIS_VERIFICATION_URL
+    value: >-
+      https://abis.camu.cg/public/enrollment/index.html#/enroll/applicant-detail
+  - name: REACT_APP_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: ims-frontend-prod
+        key: REACT_APP_USERNAME
+  - name: REACT_APP_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: ims-frontend-prod
+        key: REACT_APP_PASSWORD
+
+lifecycle:
+  preStop:
+    exec:
+      command:
+      - sh
+      - -c
+      - "sleep 10"
+      
+secrets:
+  enabled: true
+  data:
+    REACT_APP_USERNAME: <path:akieni/data/prod/camu-prod/ims-frontend-prod#REACT_APP_USERNAME>
+    REACT_APP_PASSWORD: <path:akieni/data/prod/camu-prod/ims-frontend-prod#REACT_APP_PASSWORD>
+
+# Additional volumes on the output Deployment definition.
+volumes:
+  - name: kube-api-access
+    projected:
+      sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            name: kube-root-ca.crt
+            items:
+              - key: ca.crt
+                path: ca.crt
+        - downwardAPI:
+            items:
+              - path: namespace
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+      defaultMode: 420
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts:
+  - name: kube-api-access
+    readOnly: true
+    mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+
+terminationMessagePath: /dev/termination-log
+terminationMessagePolicy: File
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - openims-fe
+              - key: group
+                operator: In
+                values:
+                  - camu
+          topologyKey: kubernetes.io/hostname
